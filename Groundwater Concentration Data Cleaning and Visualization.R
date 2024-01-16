@@ -146,15 +146,16 @@ ggplot(sulfate_data2 %>% filter(MW %in% c("A", "B", "C", "D", "E", "F", "G", "H"
   geom_line(na.rm = TRUE) +
   scale_y_log10() +
   facet_wrap(~ MW) +
-  geom_vline(aes(xintercept=as.numeric(as.Date(inj_date))), 
-             data = injdatesonly, linetype=4, color = "darkgreen") +
-  geom_vline(aes(xintercept=as.numeric(as.Date(push_date))), 
-             data = pushpulldatesonly, linetype=4, color = "darkorange") +
+  geom_vline(aes(xintercept=as.numeric(as.Date(year))), 
+             data = injdates, linetype=4, color = "darkgreen") +
+  geom_vline(aes(xintercept=as.numeric(as.Date(year))), 
+             data = pushpulldates, linetype=4, color = "darkorange") +
   labs(color = "Monitoring Well") +
   theme(legend.position = "right", plot.title = element_text(size = 16, hjust = 0.5)) +
   ggtitle("Sulfate Concentrations by Injection Well") + 
   ylab("Sulfate (mg/L, log scale)") +
   scale_x_date(date_breaks = "4 years", date_labels = "%Y") 
+
 
 # Plot sulfate concentrations by pad-edge well (PLOT 4): 
 ggplot(sulfate_data2 %>% filter(MW %in% c("I", "J", "K", "M")), 
