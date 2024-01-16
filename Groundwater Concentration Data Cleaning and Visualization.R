@@ -66,6 +66,22 @@ Data2 <- Data[,c(1,16,3,18,5,19,7,20,9,21,11,22,13,23,24)]
 write_xlsx(Data2, "Cleaned Data")
 
 
+# Clean sulfate_injections_data, format class:
+sulfate_injections_data <- clean_names(sulfate_injections_data)
+sulfate_injections_data$year <- ymd(sulfate_injections_data$year, truncated = 2L) #convert to date
+sulfate_injections_data$MW <- as.factor(sulfate_injections_data$well_id_injection_type)
+
+# Extract and format injection and push-pull dates from sulfate_injections_data for use in ggplot:
+injdates <- sulfate_injections_data %>% filter(type %in% c("Sulfate injection"))
+injdates$type <- as.factor(injdates$type)
+injdatesonly <- as.data.frame(injdates$year)
+injdatesonly <- as.data.frame(injdates$year) %>% mutate(inj_date = injdates$year)
+pushpulldates <- sulfate_injections_data %>% filter(type %in% c("Push-pull"))
+pushpulldates$type <- as.factor(pushpulldates$type)
+pushpulldatesonly <- as.data.frame(pushpulldates$year)
+pushpulldatesonly <- as.data.frame(pushpulldates$year) %>% mutate(push_date = pushpulldates$year)
+
+
 # Create time-series visualizations of Data by Monitoring Well:
 
 # Faceted fixed-scale (PLOT 1):
@@ -100,21 +116,6 @@ ggplot(inj, aes(Date, total_hydrocarbons, color = MW)) +
 #####################################
 
       ### Cleaning, summarizing and visualizing sulfate concentration and injections data:
-
-# Clean sulfate_injections_data, format class:
-sulfate_injections_data <- clean_names(sulfate_injections_data)
-sulfate_injections_data$year <- ymd(sulfate_injections_data$year, truncated = 2L) #convert to date
-sulfate_injections_data$MW <- as.factor(sulfate_injections_data$well_id_injection_type)
-
-# Extract and format injection and push-pull dates from sulfate_injections_data for use in ggplot:
-injdates <- sulfate_injections_data %>% filter(type %in% c("Sulfate injection"))
-injdates$type <- as.factor(injdates$type)
-injdatesonly <- as.data.frame(injdates$year)
-injdatesonly <- as.data.frame(injdates$year) %>% mutate(inj_date = injdates$year)
-pushpulldates <- sulfate_injections_data %>% filter(type %in% c("Push-pull"))
-pushpulldates$type <- as.factor(pushpulldates$type)
-pushpulldatesonly <- as.data.frame(pushpulldates$year)
-pushpulldatesonly <- as.data.frame(pushpulldates$year) %>% mutate(push_date = pushpulldates$year)
 
 # Format sulfate_data column class:
 sulfate_data$Date <- as.Date(as.numeric(as.character(sulfate_data$Date)), origin = "1899-12-30")
