@@ -10,7 +10,7 @@ require(ggplot2)
 require(writexl)
 
 # Import datasets (hydrocarbon constituent concentrations, sulfate concentrations, sulfate injections):
-Data <- EQ_Shop_PHC_Data
+Data <- Sample_Data_PHC
 sulfate_injections_data <- sulfate_injections_dataset
 sulfate_data <- Sample_Data_Sulfate
 
